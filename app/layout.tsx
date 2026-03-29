@@ -12,10 +12,15 @@ export const metadata: Metadata = {
   title: "I AM PRIYANSHU",
   description: "Gamer · Builder · Strategist — A cinematic scroll sequence experience.",
   keywords: ["Priyanshu", "portfolio", "cinematic", "gamer", "builder", "strategist"],
+  icons: {
+    icon: "/favicon.png",
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: "I AM PRIYANSHU",
     description: "Gamer · Builder · Strategist",
     type: "website",
+    images: ["/logo.png"],
   },
 };
 

@@ -39,9 +39,9 @@ export default function Navbar() {
         ].join(' ')}
         aria-label="Main navigation"
       >
-        {/* Logo / wordmark */}
+        {/* Logo / img */}
         <a href="#" className="nav__logo" aria-label="Priyanshu – home">
-          <span className="nav__logo-mark">P</span>
+          <img src="/logo.png" alt="Priyanshu Logo" className="nav__logo-img" />
         </a>
 
         {/* Centre links — desktop */}
