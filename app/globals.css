@@ -1,0 +1,447 @@
+/* ============================================================
+   GLOBAL RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  background: #000;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+}
+
+/* ============================================================
+   CANVAS — fixed, covers screen with bleed behavior
+   ============================================================ */
+#seq {
+  position: fixed;
+  z-index: 0;
+  display: block;
+  overflow: hidden;
+}
+
+/* ============================================================
+   SCROLL SPACER — creates the scrollable height
+   ============================================================ */
+#spacer {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ============================================================
+   LOADING OVERLAY
+   ============================================================ */
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  transition: opacity 0.8s ease;
+}
+
+#loader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bar-wrap {
+  width: min(240px, 60vw);
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 1px;
+  width: 0%;
+  background: #fff;
+  transition: width 0.1s linear;
+}
+
+.count {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  color: #fff;
+  letter-spacing: 0.3em;
+}
+
+/* ============================================================
+   REVEAL TEXT — fixed center, fades in at end of scroll
+   ============================================================ */
+#reveal {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  gap: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+#reveal.visible {
+  opacity: 1;
+}
+
+.pre {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(0.9rem, 2.5vw, 1.6rem);
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.7em;
+  margin-bottom: 4px;
+}
+
+.name {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(3.5rem, 14vw, 10rem);
+  color: #fff;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  transform: scale(0.95);
+  transition: transform 0.8s cubic-bezier(0.25, 0, 0, 1);
+}
+
+#reveal.visible .name {
+  transform: scale(1);
+}
+
+.tag {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(0.55rem, 1.8vw, 0.85rem);
+  color: #00a8ff;
+  letter-spacing: 0.45em;
+  margin-top: 12px;
+  opacity: 0;
+  transition: opacity 0.5s ease 0.6s;
+}
+
+#reveal.visible .tag {
+  opacity: 1;
+}
+
+/* ============================================================
+   SCROLL INDICATOR
+   ============================================================ */
+#scroll-hint {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: opacity 0.4s ease;
+}
+
+#scroll-hint.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.line {
+  width: 1px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+/* ============================================================
+   GRAIN OVERLAY — pure CSS, zero JS cost
+   ============================================================ */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* ============================================================
+   NAVBAR — Apple-style glass pill
+   ============================================================ */
+
+/* ---------- Custom properties ---------- */
+:root {
+  --nav-height: 52px;
+  --nav-h-pad: 20px;
+  --nav-radius: 980px;
+  --nav-max-w: 860px;
+  --nav-glass: rgba(10, 10, 10, 0.45);
+  --nav-glass-scrolled: rgba(8, 8, 8, 0.72);
+  --nav-border: rgba(255, 255, 255, 0.10);
+  --nav-border-scrolled: rgba(255, 255, 255, 0.08);
+  --nav-link: rgba(255, 255, 255, 0.70);
+  --nav-link-hover: #fff;
+  --nav-cta-bg: rgba(255, 255, 255, 0.10);
+  --nav-cta-bg-hover: rgba(255, 255, 255, 0.18);
+  --nav-transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 200;
+
+  display: flex;
+  align-items: center;
+  gap: 0;
+
+  width: min(calc(100% - 40px), var(--nav-max-w));
+  height: var(--nav-height);
+  padding: 0 var(--nav-h-pad);
+
+  background: var(--nav-glass);
+  border: 1px solid var(--nav-border);
+  border-radius: var(--nav-radius);
+
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+          backdrop-filter: blur(28px) saturate(180%);
+
+  box-shadow:
+    0 0 0 0.5px rgba(255,255,255,0.06) inset,
+    0 2px 32px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(0,0,0,0.25);
+
+  transition:
+    background var(--nav-transition),
+    border-color var(--nav-transition),
+    box-shadow var(--nav-transition),
+    translate var(--nav-transition),
+    opacity var(--nav-transition),
+    top var(--nav-transition);
+
+  pointer-events: auto;
+}
+
+.nav--scrolled {
+  background: var(--nav-glass-scrolled);
+  border-color: var(--nav-border-scrolled);
+  box-shadow:
+    0 0 0 0.5px rgba(255,255,255,0.05) inset,
+    0 4px 48px rgba(0,0,0,0.70),
+    0 0 0 1px rgba(0,0,0,0.35);
+}
+
+.nav--hidden {
+  translate: -50% -110%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Logo */
+.nav__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.nav__logo:hover {
+  background: rgba(255,255,255,0.16);
+  border-color: rgba(255,255,255,0.22);
+}
+.nav__logo-mark {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1rem;
+  color: #fff;
+  letter-spacing: 0;
+  line-height: 1;
+  user-select: none;
+}
+
+/* Centre links */
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  margin: 0 auto;
+}
+
+.nav__link {
+  display: block;
+  padding: 7px 14px;
+  border-radius: 980px;
+  font-family: -apple-system, 'SF Pro Text', 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 450;
+  letter-spacing: 0.01em;
+  color: var(--nav-link);
+  text-decoration: none;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+.nav__link:hover {
+  color: var(--nav-link-hover);
+  background: rgba(255,255,255,0.07);
+}
+
+/* CTA */
+.nav__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 18px;
+  border-radius: 980px;
+  background: var(--nav-cta-bg);
+  border: 1px solid rgba(255,255,255,0.14);
+  font-family: -apple-system, 'SF Pro Text', 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: #fff;
+  text-decoration: none;
+  flex-shrink: 0;
+  white-space: nowrap;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+.nav__cta:hover {
+  background: var(--nav-cta-bg-hover);
+  border-color: rgba(255,255,255,0.22);
+  transform: scale(1.03);
+}
+.nav__cta:active { transform: scale(0.97); }
+
+/* Hamburger */
+.nav__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  margin-left: auto;
+}
+.nav__burger span {
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  background: rgba(255,255,255,0.75);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform-origin: left center;
+}
+.nav--open .nav__burger span:nth-child(1) { transform: rotate(42deg) translateY(-0.5px); }
+.nav--open .nav__burger span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav--open .nav__burger span:nth-child(3) { transform: rotate(-42deg) translateY(0.5px); }
+
+/* Mobile drawer */
+.nav__drawer {
+  position: fixed;
+  top: calc(18px + var(--nav-height) + 8px);
+  left: 50%;
+  translate: -50% -8px;
+  z-index: 199;
+  width: min(calc(100% - 40px), 420px);
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+
+  background: rgba(8, 8, 10, 0.85);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 22px;
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+          backdrop-filter: blur(32px) saturate(180%);
+  box-shadow: 0 8px 48px rgba(0,0,0,0.70);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, translate 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.nav__drawer--open {
+  opacity: 1;
+  pointer-events: auto;
+  translate: -50% 0;
+}
+.nav__drawer ul { list-style: none; }
+
+.nav__drawer-link {
+  display: block;
+  padding: 13px 16px;
+  border-radius: 14px;
+  font-family: -apple-system, 'SF Pro Text', 'Inter', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 450;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.nav__drawer-link:hover {
+  background: rgba(255,255,255,0.07);
+  color: #fff;
+}
+
+.nav__cta--drawer {
+  margin-top: 4px;
+  width: 100%;
+  padding: 13px 18px;
+  border-radius: 14px;
+  font-size: 0.88rem;
+}
+
+.nav__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 198;
+  background: transparent;
+}
+
+@media (max-width: 640px) {
+  .nav__links,
+  .nav__cta:not(.nav__cta--drawer) {
+    display: none;
+  }
+  .nav__burger {
+    display: flex;
+  }
+}
