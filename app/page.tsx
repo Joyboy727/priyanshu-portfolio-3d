@@ -7,8 +7,8 @@ import Navbar from './components/Navbar';
 // CONFIGURATION
 // ============================================================
 const FRAME_COUNT = 192;        // total WebP frames (000–191)
-const FRAME_PATH  = '/frames/frame_';  // served from public/frames/
-const FRAME_EXT   = '.webp';
+const FRAME_PATH = '/frames/frame_';  // served from public/frames/
+const FRAME_EXT = '.webp';
 // Frames named: frame_0001.webp, frame_0002.webp, etc.
 // ============================================================
 
@@ -17,18 +17,18 @@ function pad(n: number): string {
 }
 
 export default function Home() {
-  const canvasRef    = useRef<HTMLCanvasElement>(null);
-  const loaderRef    = useRef<HTMLDivElement>(null);
-  const barRef       = useRef<HTMLDivElement>(null);
-  const countRef     = useRef<HTMLDivElement>(null);
-  const spacerRef    = useRef<HTMLDivElement>(null);
-  const revealRef    = useRef<HTMLDivElement>(null);
-  const hintRef      = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const loaderRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+  const countRef = useRef<HTMLDivElement>(null);
+  const spacerRef = useRef<HTMLDivElement>(null);
+  const revealRef = useRef<HTMLDivElement>(null);
+  const hintRef = useRef<HTMLDivElement>(null);
 
-  const framesRef      = useRef<HTMLImageElement[]>([]);
-  const loadedRef      = useRef(0);
+  const framesRef = useRef<HTMLImageElement[]>([]);
+  const loadedRef = useRef(0);
   const currentFrameRef = useRef(-1);
-  const tickingRef     = useRef(false);
+  const tickingRef = useRef(false);
 
   // ── RESIZE: 16:9 cover on any screen ──────────────────────
   const resize = useCallback(() => {
@@ -43,21 +43,21 @@ export default function Home() {
     if (sa < fa) {
       // Portrait phone — height fills screen, width bleeds
       const w = Math.ceil(sh * fa);
-      canvas.width  = w;
+      canvas.width = w;
       canvas.height = sh;
-      canvas.style.width  = w + 'px';
+      canvas.style.width = w + 'px';
       canvas.style.height = sh + 'px';
-      canvas.style.left   = Math.floor((sw - w) / 2) + 'px';
-      canvas.style.top    = '0px';
+      canvas.style.left = Math.floor((sw - w) / 2) + 'px';
+      canvas.style.top = '0px';
     } else {
       // Landscape / desktop — width fills, height centered
       const h = Math.ceil(sw / fa);
-      canvas.width  = sw;
+      canvas.width = sw;
       canvas.height = h;
-      canvas.style.width  = sw + 'px';
+      canvas.style.width = sw + 'px';
       canvas.style.height = h + 'px';
-      canvas.style.left   = '0px';
-      canvas.style.top    = Math.floor((sh - h) / 2) + 'px';
+      canvas.style.left = '0px';
+      canvas.style.top = Math.floor((sh - h) / 2) + 'px';
     }
 
     // Redraw current frame after resize
@@ -72,8 +72,8 @@ export default function Home() {
   const setSpacerHeight = useCallback(() => {
     const spacer = spacerRef.current;
     if (!spacer) return;
-    const isMobile    = window.innerWidth < 768;
-    const pxPerFrame  = isMobile ? 10 : 14;
+    const isMobile = window.innerWidth < 768;
+    const pxPerFrame = isMobile ? 10 : 14;
     spacer.style.height = (FRAME_COUNT * pxPerFrame) + 'px';
   }, []);
 
@@ -83,14 +83,14 @@ export default function Home() {
     tickingRef.current = true;
 
     requestAnimationFrame(() => {
-      const canvas  = canvasRef.current;
-      const reveal  = revealRef.current;
-      const hint    = hintRef.current;
+      const canvas = canvasRef.current;
+      const reveal = revealRef.current;
+      const hint = hintRef.current;
       if (!canvas) { tickingRef.current = false; return; }
 
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const fraction  = Math.min(window.scrollY / maxScroll, 1);
-      const index     = Math.min(
+      const fraction = Math.min(window.scrollY / maxScroll, 1);
+      const index = Math.min(
         Math.floor(fraction * FRAME_COUNT),
         FRAME_COUNT - 1
       );
@@ -213,7 +213,7 @@ export default function Home() {
       <div id="reveal" ref={revealRef}>
         <span className="pre">I AM</span>
         <span className="name">PRIYANSHU</span>
-        <span className="tag">GAMER · BUILDER · STRATEGIST</span>
+        <span className="tag">WEB DEVELOPER · BUILDER · AI ENTHUSIAST</span>
       </div>
 
       {/* 5. SCROLL INDICATOR — visible at start only */}
