@@ -1,7 +1,9 @@
 /* ============================================================
    GLOBAL RESET & BASE
    ============================================================ */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -174,8 +176,15 @@ body {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.2; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
 }
 
 /* ============================================================
@@ -234,12 +243,12 @@ body::after {
   border-radius: var(--nav-radius);
 
   -webkit-backdrop-filter: blur(28px) saturate(180%);
-          backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(28px) saturate(180%);
 
   box-shadow:
-    0 0 0 0.5px rgba(255,255,255,0.06) inset,
-    0 2px 32px rgba(0,0,0,0.55),
-    0 0 0 1px rgba(0,0,0,0.25);
+    0 0 0 0.5px rgba(255, 255, 255, 0.06) inset,
+    0 2px 32px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(0, 0, 0, 0.25);
 
   transition:
     background var(--nav-transition),
@@ -256,9 +265,9 @@ body::after {
   background: var(--nav-glass-scrolled);
   border-color: var(--nav-border-scrolled);
   box-shadow:
-    0 0 0 0.5px rgba(255,255,255,0.05) inset,
-    0 4px 48px rgba(0,0,0,0.70),
-    0 0 0 1px rgba(0,0,0,0.35);
+    0 0 0 0.5px rgba(255, 255, 255, 0.05) inset,
+    0 4px 48px rgba(0, 0, 0, 0.70),
+    0 0 0 1px rgba(0, 0, 0, 0.35);
 }
 
 .nav--hidden {
@@ -278,9 +287,11 @@ body::after {
   flex-shrink: 0;
   transition: transform 0.2s ease;
 }
+
 .nav__logo:hover {
   transform: scale(1.05);
 }
+
 .nav__logo-img {
   width: 100%;
   height: 100%;
@@ -298,7 +309,7 @@ body::after {
   margin: 0 auto;
 }
 
-.nav__link {
+.nav__link, .nav__link:visited, .nav__link:active {
   display: block;
   padding: 7px 14px;
   border-radius: 980px;
@@ -310,20 +321,21 @@ body::after {
   text-decoration: none;
   transition: color 0.2s ease, background 0.2s ease;
 }
+
 .nav__link:hover {
   color: var(--nav-link-hover);
-  background: rgba(255,255,255,0.07);
+  background: rgba(255, 255, 255, 0.07);
 }
 
 /* CTA */
-.nav__cta {
+.nav__cta, .nav__cta:visited, .nav__cta:active {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 8px 18px;
   border-radius: 980px;
   background: var(--nav-cta-bg);
-  border: 1px solid rgba(255,255,255,0.14);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   font-family: -apple-system, 'SF Pro Text', 'Inter', sans-serif;
   font-size: 0.78rem;
   font-weight: 500;
@@ -334,12 +346,68 @@ body::after {
   white-space: nowrap;
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
 }
+
 .nav__cta:hover {
   background: var(--nav-cta-bg-hover);
-  border-color: rgba(255,255,255,0.22);
+  border-color: rgba(255, 255, 255, 0.22);
   transform: scale(1.03);
 }
-.nav__cta:active { transform: scale(0.97); }
+
+.nav__cta:active {
+  transform: scale(0.97);
+}
+
+.cta-primary, .cta-primary:visited, .cta-primary:active {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  color: #000;
+  background: #fff;
+  padding: 12px 28px;
+  border-radius: 2px;
+  text-decoration: none;
+  letter-spacing: 0.2em;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.cta-primary:hover {
+  background: #00a8ff;
+  color: #fff;
+  box-shadow: 0 10px 20px rgba(0, 168, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.cta-secondary, .cta-secondary:visited, .cta-secondary:active {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 0.25em;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.cta-secondary::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: 0px;
+  left: 0;
+  background-color: #00a8ff;
+  transition: width 0.3s ease;
+}
+
+.cta-secondary:hover {
+  opacity: 1;
+  color: #00a8ff;
+}
+
+.cta-secondary:hover::after {
+  width: 100%;
+}
 
 /* Hamburger */
 .nav__burger {
@@ -355,18 +423,29 @@ body::after {
   cursor: pointer;
   margin-left: auto;
 }
+
 .nav__burger span {
   display: block;
   width: 20px;
   height: 1.5px;
-  background: rgba(255,255,255,0.75);
+  background: rgba(255, 255, 255, 0.75);
   border-radius: 2px;
   transition: transform 0.3s ease, opacity 0.3s ease;
   transform-origin: left center;
 }
-.nav--open .nav__burger span:nth-child(1) { transform: rotate(42deg) translateY(-0.5px); }
-.nav--open .nav__burger span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-.nav--open .nav__burger span:nth-child(3) { transform: rotate(-42deg) translateY(0.5px); }
+
+.nav--open .nav__burger span:nth-child(1) {
+  transform: rotate(42deg) translateY(-0.5px);
+}
+
+.nav--open .nav__burger span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.nav--open .nav__burger span:nth-child(3) {
+  transform: rotate(-42deg) translateY(0.5px);
+}
 
 /* Mobile drawer */
 .nav__drawer {
@@ -383,36 +462,41 @@ body::after {
   padding: 10px;
 
   background: rgba(8, 8, 10, 0.85);
-  border: 1px solid rgba(255,255,255,0.10);
+  border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: 22px;
   -webkit-backdrop-filter: blur(32px) saturate(180%);
-          backdrop-filter: blur(32px) saturate(180%);
-  box-shadow: 0 8px 48px rgba(0,0,0,0.70);
+  backdrop-filter: blur(32px) saturate(180%);
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.70);
 
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s ease, translate 0.3s cubic-bezier(0.4,0,0.2,1);
+  transition: opacity 0.25s ease, translate 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 .nav__drawer--open {
   opacity: 1;
   pointer-events: auto;
   translate: -50% 0;
 }
-.nav__drawer ul { list-style: none; }
 
-.nav__drawer-link {
+.nav__drawer ul {
+  list-style: none;
+}
+
+.nav__drawer-link, .nav__drawer-link:visited, .nav__drawer-link:active {
   display: block;
   padding: 13px 16px;
   border-radius: 14px;
   font-family: -apple-system, 'SF Pro Text', 'Inter', sans-serif;
   font-size: 0.92rem;
   font-weight: 450;
-  color: rgba(255,255,255,0.75);
+  color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
   transition: background 0.2s ease, color 0.2s ease;
 }
+
 .nav__drawer-link:hover {
-  background: rgba(255,255,255,0.07);
+  background: rgba(255, 255, 255, 0.07);
   color: #fff;
 }
 
@@ -432,10 +516,12 @@ body::after {
 }
 
 @media (max-width: 640px) {
+
   .nav__links,
   .nav__cta:not(.nav__cta--drawer) {
     display: none;
   }
+
   .nav__burger {
     display: flex;
   }

@@ -6,7 +6,7 @@ const NAV_LINKS = [
   { label: 'About',    href: '#about' },
   { label: 'Work',     href: '#work' },
   { label: 'Skills',   href: '#skills' },
-  { label: 'Contact',  href: '#contact' },
+  { label: 'Contact',  href: 'mailto:priyanshuchowdhury38@gmail.com' },
 ];
 
 export default function Navbar() {
@@ -56,7 +56,7 @@ export default function Navbar() {
         </ul>
 
         {/* CTA — desktop */}
-        <a href="#contact" className="nav__cta">
+        <a href="mailto:priyanshuchowdhury38@gmail.com" className="nav__cta">
           Let&apos;s talk
         </a>
 
@@ -91,7 +91,7 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
-        <a href="#contact" className="nav__cta nav__cta--drawer" onClick={() => setMenuOpen(false)}>
+        <a href="mailto:priyanshuchowdhury38@gmail.com" className="nav__cta nav__cta--drawer" onClick={() => setMenuOpen(false)}>
           Let&apos;s talk
         </a>
       </div>

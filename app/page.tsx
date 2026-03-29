@@ -214,6 +214,7 @@ export default function Home() {
         <span className="pre">I AM</span>
         <span className="name">PRIYANSHU</span>
         <span className="tag">WEB DEVELOPER · BUILDER · AI ENTHUSIAST</span>
+        <a href="mailto:priyanshuchowdhury38@gmail.com" className="email">priyanshuchowdhury38@gmail.com</a>
       </div>
 
       {/* 5. SCROLL INDICATOR — visible at start only */}
